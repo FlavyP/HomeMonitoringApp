@@ -5,23 +5,19 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_bluetooth">BluetoothActivity</string>
     <string name="title_activity_about">AboutActivity</string>
-<<<<<<< HEAD
-    <string name="title_activity_sms">SMSActivity</string>
-    <string name="title_activity_send_sms">SendSms</string>
-=======
+
+
+
 
 
 
     <string name="title_activity_flame">FlameActivity</string>
 
->>>>>>> 446418c26a5f6137c8e3dffaaa332e2261315bc4
+
     <string name="title_activity_status">StatusActivity</string>
 
 
     <string name="back">back</string>
     <string name="settings">settings</string>
-<<<<<<< HEAD
-=======
 
->>>>>>> 446418c26a5f6137c8e3dffaaa332e2261315bc4
 </resources>

@@ -40,11 +40,7 @@ private Button butCon, butStatus,butLights,butFlame,butAbout;
 
                 //Toast.makeText(MainActivity.this, "Hello from  Home Screen", Toast.LENGTH_LONG).show();
 
-<<<<<<< HEAD
-                //finish();
-=======
 
->>>>>>> 446418c26a5f6137c8e3dffaaa332e2261315bc4
             }
 
 
