@@ -1,5 +1,7 @@
 package thirdsem.flavy.homemonitoringapp;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,12 +14,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FlameActivity extends AppCompatActivity {
+public class FlameActivity extends Activity {
 
-    private Button send;
-    private EditText num;
-    private String numb;
-    private String msg;
+    private Button sendSms,sendEmail;
+    private String numb, msg;
+    private String mail;
     private TextView sendto;
     private TextView txtmsg;
 
@@ -28,6 +29,9 @@ public class FlameActivity extends AppCompatActivity {
 
         numb = PreferenceManager.getDefaultSharedPreferences(this).getString("cPhoneNumber", "");
         msg = PreferenceManager.getDefaultSharedPreferences(this).getString("message", "");
+        mail = PreferenceManager.getDefaultSharedPreferences(this).getString("cEmail", "");
+
+
 
         sendto = (TextView) findViewById(R.id.txtSendTo);
         txtmsg = (TextView) findViewById(R.id.txtmsg);
@@ -37,13 +41,24 @@ public class FlameActivity extends AppCompatActivity {
 
 
 
-        send = (Button) findViewById(R.id.btnS);
-        send.setOnClickListener(new View.OnClickListener() {
+        sendSms = (Button) findViewById(R.id.btnS);
+        sendSms.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                sendSms(numb, msg);
+                Toast.makeText(FlameActivity.this, "Send to " + numb, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        sendEmail = (Button) findViewById(R.id.btnEmail);
+        sendEmail.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v)
             {
-                sendSms(numb, msg);
-                Toast.makeText(FlameActivity.this, "Send to " + numb, Toast.LENGTH_SHORT).show();
+                sendEmail(mail, msg);
+                Toast.makeText(FlameActivity.this, "mail: " + mail, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -52,7 +67,17 @@ public class FlameActivity extends AppCompatActivity {
     {
         SmsManager sms = SmsManager.getDefault();
         sms.sendTextMessage(phNumber,null, message, null, null);
-        Toast.makeText(this, "Message send", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Message sendSms", Toast.LENGTH_LONG).show();
+    }
+
+    private void sendEmail(String mailTo, String message)
+    {
+        Intent implicitIntent = new Intent(Intent.ACTION_SEND);
+        implicitIntent.setType("message/rfc822");
+        implicitIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {mailTo});
+        implicitIntent.putExtra(Intent.EXTRA_SUBJECT, "HELP!");
+        implicitIntent.putExtra(Intent.EXTRA_TEXT, message);
+        startActivity(implicitIntent);
     }
 
     @Override
