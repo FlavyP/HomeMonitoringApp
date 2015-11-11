@@ -6,4 +6,6 @@
     <string name="title_activity_bluetooth">BluetoothActivity</string>
     <string name="title_activity_about">AboutActivity</string>
     <string name="title_activity_sms">SMSActivity</string>
+    <string name="title_activity_send_sms">SendSms</string>
+    <string name="title_activity_flame">FlameActivity</string>
 </resources>
