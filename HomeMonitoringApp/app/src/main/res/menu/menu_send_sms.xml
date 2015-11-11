@@ -1,11 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="thirdsem.flavy.homemonitoringapp.FlameActivity">
-<<<<<<< HEAD
+    tools:context="thirdsem.flavy.homemonitoringapp.SendSmsActivity">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
-=======
-    <item android:id="@+id/action_settings" android:title="@string/back"
->>>>>>> c5107912960ee9709bd4c7f2cd4d79cfa3d1ebaf
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>
