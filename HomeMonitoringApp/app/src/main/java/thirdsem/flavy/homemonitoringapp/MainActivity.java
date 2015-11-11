@@ -38,9 +38,9 @@ private Button butCon, butStatus,butLights,butFlame,butAbout;
                 startActivity(myIntent);
 
 
-                Toast.makeText(MainActivity.this, "Hello from  Home Screen", Toast.LENGTH_LONG).show();
+                //Toast.makeText(MainActivity.this, "Hello from  Home Screen", Toast.LENGTH_LONG).show();
 
-                finish();
+                //finish();
             }
 
 
