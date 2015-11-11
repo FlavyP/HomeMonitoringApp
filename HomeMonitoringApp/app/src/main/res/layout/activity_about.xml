@@ -1,18 +1,31 @@
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:layout_weight="1"
-    android:layout_gravity="center">
+    >
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="250dp"
-              android:layout_height="wrap_content"
-              android:orientation="vertical"
-              android:layout_gravity="center"
-                tools:context="thirdsem.flavy.homemonitoringapp.AboutActivity">
+
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingTop="12dp"
+    android:paddingBottom="20dp"
+    android:scrollbarStyle="outsideOverlay"
+    android:layout_centerVertical="true"
+    >
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    tools:context="thirdsem.flavy.homemonitoringapp.AboutActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -183,3 +196,4 @@
 </LinearLayout>
 
 </ScrollView>
+</RelativeLayout>
