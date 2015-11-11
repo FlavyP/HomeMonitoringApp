@@ -21,10 +21,11 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
     private EditText yourEmail;
     private EditText prefContactName;
     private EditText prefContactEmail;
+    private EditText prefContactPhoneNumber;
     private EditText emergencyMessage;
 
     //private boolean canBeSaved = false;
-    private boolean[] canBeSaved = new boolean[6];
+    private boolean[] canBeSaved = new boolean[7];
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -57,6 +58,10 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
         prefContactEmail = (EditText) findViewById(R.id.prefContactEmail);
         prefContactEmail.addTextChangedListener(this);
         prefContactEmail.setError("Required");
+
+        prefContactPhoneNumber = (EditText) findViewById(R.id.prefContactPhoneNumber);
+        prefContactPhoneNumber.addTextChangedListener(this);
+        prefContactPhoneNumber.setError("Required");
 
         emergencyMessage = (EditText) findViewById(R.id.emergencyMessage);
         emergencyMessage.addTextChangedListener(this);
@@ -155,13 +160,29 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
             canBeSaved[4] = false;
         }
 
+        if (!prefContactPhoneNumber.getText().toString().isEmpty())
+        {
+            prefContactPhoneNumber.setError(null);
+            canBeSaved[5] = true;
+            if(isPhoneNumberValid(prefContactPhoneNumber.getText().toString()) == false)
+            {
+                prefContactPhoneNumber.setError("Enter valid phone number");
+                canBeSaved[5] = false;
+            }
+        }
+        else
+        {
+            prefContactPhoneNumber.setError("Required");
+            canBeSaved[5] = false;
+        }
+
         if (!emergencyMessage.getText().toString().isEmpty()){
             emergencyMessage.setError(null);
-            canBeSaved[5] = true;
+            canBeSaved[6] = true;
         }
         else{
             emergencyMessage.setError("Required");
-            canBeSaved[5] = false;
+            canBeSaved[6] = false;
         }
     }
 
@@ -178,6 +199,11 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
     private boolean isEmailValid(String email)
     {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    private boolean isPhoneNumberValid(String phoneNumber)
+    {
+        return !TextUtils.isEmpty(phoneNumber) && android.util.Patterns.PHONE.matcher(phoneNumber).matches();
     }
 
     @Override
@@ -202,7 +228,7 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
             case R.id.saveButton:
                 if(canSave()) {
                     saveDetails();
-                    Toast.makeText(AboutActivity.this, "Details saved " + canBeSaved, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AboutActivity.this, "Details saved", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     Toast.makeText(AboutActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();

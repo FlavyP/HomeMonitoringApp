@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:textColor="#000000"
         android:text="About Screen"
         android:textSize="20dp" />
@@ -107,6 +107,25 @@
             android:layout_gravity="center"
             android:inputType="textEmailAddress"
             android:hint="Contact email" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/prefContactPhoneNumberInputLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp">
+
+        <EditText
+            android:id="@+id/prefContactPhoneNumber"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:textColorHint="#000000"
+            android:textColor="#000000"
+            android:layout_gravity="center"
+            android:inputType="phone"
+            android:hint="Cntact PhoneNumber" />
 
     </android.support.design.widget.TextInputLayout>
 
