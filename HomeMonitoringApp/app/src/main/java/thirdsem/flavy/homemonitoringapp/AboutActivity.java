@@ -86,16 +86,20 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
         String cEmail = prefContactEmail.getText().toString();
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("cEmail", cEmail).commit();
 
+        String cPhoneNumber = prefContactPhoneNumber.getText().toString();
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("cPhoneNumber", cPhoneNumber).commit();
+
         String message = emergencyMessage.getText().toString();
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("message", message).commit();
     }
 
-    private void setAbout (String name, String address, String yEmail, String cName, String cEmail, String message) {
+    private void setAbout (String name, String address, String yEmail, String cName, String cEmail, String cPhoneNumber, String message) {
         yourName.setText(name);
         yourAddress.setText(address);
         yourEmail.setText(yEmail);
         prefContactName.setText(cName);
         prefContactEmail.setText(cEmail);
+        prefContactPhoneNumber.setText(cPhoneNumber);
         emergencyMessage.setText(message);
     }
 
@@ -217,9 +221,10 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
         String yEmail = PreferenceManager.getDefaultSharedPreferences(this).getString("yEmail", "");
         String cName = PreferenceManager.getDefaultSharedPreferences(this).getString("cName", "");
         String cEmail = PreferenceManager.getDefaultSharedPreferences(this).getString("cEmail", "");
+        String cPhoneNumber = PreferenceManager.getDefaultSharedPreferences(this).getString("cPhoneNumber", "");
         String message = PreferenceManager.getDefaultSharedPreferences(this).getString("message", "");
 
-        setAbout(name, address, yEmail, cName, cEmail, message);
+        setAbout(name, address, yEmail, cName, cEmail, cPhoneNumber, message);
         checkText();
 
     }
