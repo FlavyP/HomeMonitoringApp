@@ -27,27 +27,18 @@
         <activity
             android:name=".AboutActivity"
             android:label="@string/title_activity_about" >
-<<<<<<< HEAD
 
         </activity>
 
         <activity
             android:name=".FlameActivity"
             android:label="@string/title_activity_flame" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-=======
->>>>>>> c5107912960ee9709bd4c7f2cd4d79cfa3d1ebaf
-
         </activity>
-<<<<<<< HEAD
-=======
 
         <activity
             android:name=".StatusActivity"
             android:label="@string/title_activity_status" >
         </activity>
->>>>>>> c5107912960ee9709bd4c7f2cd4d79cfa3d1ebaf
     </application>
 
 </manifest>

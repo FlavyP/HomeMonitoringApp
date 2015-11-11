@@ -26,8 +26,6 @@ public class FlameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flame);
 
-        num = (EditText) findViewById(R.id.editText);
-
         numb = PreferenceManager.getDefaultSharedPreferences(this).getString("cPhoneNumber", "");
         msg = PreferenceManager.getDefaultSharedPreferences(this).getString("message", "");
 
