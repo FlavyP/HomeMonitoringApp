@@ -40,7 +40,11 @@ private Button butCon, butStatus,butLights,butFlame,butAbout;
 
                 //Toast.makeText(MainActivity.this, "Hello from  Home Screen", Toast.LENGTH_LONG).show();
 
+<<<<<<< HEAD
                 //finish();
+=======
+
+>>>>>>> 446418c26a5f6137c8e3dffaaa332e2261315bc4
             }
 
 
@@ -57,7 +61,7 @@ private Button butCon, butStatus,butLights,butFlame,butAbout;
 
                 Toast.makeText(MainActivity.this, "Hello from  Home Screen", Toast.LENGTH_LONG).show();
 
-                finish();
+
             }
 
 
@@ -80,22 +84,22 @@ private Button butCon, butStatus,butLights,butFlame,butAbout;
 //
 //        });
 
-//        butFlame.setOnClickListener(new View.OnClickListener() {
-//
-//
-//            @Override
-//            public void onClick(View v) {
-//                Intent myIntent = new Intent(MainActivity.this, FlameActivity.class);
-//                startActivity(myIntent);
-//
-//
-//                Toast.makeText(MainActivity.this, "Hello from  Home Screen", Toast.LENGTH_LONG).show();
-//
-//                finish();
-//            }
-//
-//
-//        });
+        butFlame.setOnClickListener(new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View v) {
+                Intent myIntent = new Intent(MainActivity.this, FlameActivity.class);
+                startActivity(myIntent);
+
+
+                Toast.makeText(MainActivity.this, "Hello from  Home Screen", Toast.LENGTH_LONG).show();
+
+
+            }
+
+
+        });
 
         butAbout.setOnClickListener(new View.OnClickListener() {
 
@@ -108,7 +112,7 @@ private Button butCon, butStatus,butLights,butFlame,butAbout;
 
                 Toast.makeText(MainActivity.this, "Hello from  Home Screen", Toast.LENGTH_LONG).show();
 
-                finish();
+
             }
 
 
