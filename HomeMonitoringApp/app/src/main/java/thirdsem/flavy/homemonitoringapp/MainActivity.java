@@ -1,7 +1,10 @@
 package thirdsem.flavy.homemonitoringapp;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -10,8 +13,12 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
-public static final String TAG = "artuMSG";
-private Button butCon, butStatus,butLights,butFlame,butAbout;
+    public static final String TAG = "artuMSG";
+    private Button butCon, butStatus,butLights,butFlame,butAbout;
+
+    private BluetoothAdapter BA;
+
+    private View mainLayout;
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -20,6 +27,8 @@ private Button butCon, butStatus,butLights,butFlame,butAbout;
         Log.i(TAG, "onCreate");
 
         initializeComponents();
+
+        bluetoothSnackBar();
     }
 
     private void initializeComponents()
@@ -34,6 +43,23 @@ private Button butCon, butStatus,butLights,butFlame,butAbout;
         butFlame.setOnClickListener(this);
         butAbout = (Button)findViewById(R.id.buttonAbout);
         butAbout.setOnClickListener(this);
+
+        mainLayout = findViewById(R.id.mainLayout);
+        BA = BluetoothAdapter.getDefaultAdapter();
+    }
+
+    private void bluetoothSnackBar()
+    {
+        if(!BA.isEnabled())
+        {
+            Snackbar.make(mainLayout, "Bluetooth not activated!", Snackbar.LENGTH_INDEFINITE).setAction("Fix", new View.OnClickListener() {
+                @Override
+                public void onClick (View v) {
+                    Intent bluetoothIntent = new Intent(MainActivity.this, BluetoothActivity.class);
+                    startActivity(bluetoothIntent);
+                }
+            }).setActionTextColor(Color.MAGENTA).show();
+        }
     }
 
     @Override
