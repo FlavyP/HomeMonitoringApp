@@ -107,6 +107,10 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+
+
+
+
     /* Connecting the phone to the arduino board */
     private void connectDevice()
     {
@@ -126,6 +130,10 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
             Toast.makeText(BluetoothActivity.this, "Unable to connect " + e, Toast.LENGTH_SHORT).show();
         }
     }
+
+
+
+
 
 
     @Override

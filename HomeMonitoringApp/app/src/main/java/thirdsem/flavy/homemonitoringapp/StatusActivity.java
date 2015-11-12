@@ -5,13 +5,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.TextView;
 
 public class StatusActivity extends AppCompatActivity {
 
+
+    private TextView statusText;
+    private Button conButStatus;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status);
+
+//         conButStatus = (Button) findViewById(R.id.btnfind);
+//        conButStatus.setOnClickListener(listenerButtonDiscover);
     }
 
     @Override
