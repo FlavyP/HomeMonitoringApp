@@ -63,6 +63,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onResume () {
+        super.onResume();
+        bluetoothSnackBar();
+    }
+
+    @Override
     public void onClick (View view) {
         switch (view.getId()){
             case R.id.buttonCon:
