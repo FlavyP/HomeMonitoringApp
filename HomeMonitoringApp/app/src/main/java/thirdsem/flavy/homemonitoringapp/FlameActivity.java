@@ -2,10 +2,13 @@ package thirdsem.flavy.homemonitoringapp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,7 +19,9 @@ import android.widget.Toast;
 
 public class FlameActivity extends Activity {
 
-    private Button sendSms,sendEmail;
+    public final String TAG = "Main";
+    private Button sendSms,sendEmail, dismiss;
+    private Bluetooth bt;
     private String numb, msg;
     private String mail;
     private TextView sendto;
@@ -61,6 +66,19 @@ public class FlameActivity extends Activity {
                 Toast.makeText(FlameActivity.this, "mail: " + mail, Toast.LENGTH_LONG).show();
             }
         });
+
+        dismiss = (Button) findViewById(R.id.btnDismiss);
+        dismiss.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                bt.sendMessage("9");
+                Toast.makeText(FlameActivity.this, "Dismiss msg send", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        bt = new Bluetooth(this, mHandler);
     }
 
     private void sendSms(String phNumber, String message)
@@ -79,6 +97,29 @@ public class FlameActivity extends Activity {
         implicitIntent.putExtra(Intent.EXTRA_TEXT, message);
         startActivity(implicitIntent);
     }
+
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case Bluetooth.MESSAGE_STATE_CHANGE:
+                    Log.d(TAG, "MESSAGE_STATE_CHANGE: " + msg.arg1);
+                    break;
+                case Bluetooth.MESSAGE_WRITE:
+                    Log.d(TAG, "MESSAGE_WRITE ");
+                    break;
+                case Bluetooth.MESSAGE_READ:
+                    Log.d(TAG, "MESSAGE_READ ");
+                    break;
+                case Bluetooth.MESSAGE_DEVICE_NAME:
+                    Log.d(TAG, "MESSAGE_DEVICE_NAME "+msg);
+                    break;
+                case Bluetooth.MESSAGE_TOAST:
+                    Log.d(TAG, "MESSAGE_TOAST "+msg);
+                    break;
+            }
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
