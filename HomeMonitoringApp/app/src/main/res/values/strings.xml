@@ -9,5 +9,6 @@
     <string name="title_activity_status">StatusActivity</string>
     <string name="back">back</string>
     <string name="settings">settings</string>
+    <string name="title_activity_light">LightActivity</string>
 
 </resources>
