@@ -1,31 +1,22 @@
-package thirdsem.flavy.homemonitoringapp;
+package com.example.daniel.nfcapplication;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.TextView;
 
-public class StatusActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
-
-    private TextView statusText;
-    private Button conButStatus;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_status);
-
-//         conButStatus = (Button) findViewById(R.id.btnfind);
-//        conButStatus.setOnClickListener(listenerButtonDiscover);
+        setContentView(R.layout.activity_main);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_status, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -38,9 +29,6 @@ public class StatusActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-
-            Intent myIntent = new Intent( StatusActivity.this, MainActivity.class);
-            startActivity(myIntent);
             return true;
         }
 
