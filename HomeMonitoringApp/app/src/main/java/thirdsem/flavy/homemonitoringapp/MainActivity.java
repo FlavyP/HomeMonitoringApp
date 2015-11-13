@@ -1,22 +1,18 @@
 package thirdsem.flavy.homemonitoringapp;
 
-import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     public static final String TAG = "artuMSG";
     private Button butCon, butStatus,butLights,butFlame,butAbout;
 
-    private BluetoothAdapter BA;
+    //private BluetoothAdapter BA;
 
     private View mainLayout;
 
@@ -28,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initializeComponents();
 
-        bluetoothSnackBar();
+        //bluetoothSnackBar();
     }
 
     private void initializeComponents()
@@ -45,10 +41,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         butAbout.setOnClickListener(this);
 
         mainLayout = findViewById(R.id.mainLayout);
-        BA = BluetoothAdapter.getDefaultAdapter();
+        //BA = BluetoothAdapter.getDefaultAdapter();
     }
 
-    private void bluetoothSnackBar()
+    /*private void bluetoothSnackBar()
     {
         if(!BA.isEnabled())
         {
@@ -60,12 +56,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }).setActionTextColor(Color.MAGENTA).show();
         }
-    }
+    }*/
 
     @Override
     protected void onResume () {
         super.onResume();
-        bluetoothSnackBar();
+        //bluetoothSnackBar();
     }
 
     @Override
