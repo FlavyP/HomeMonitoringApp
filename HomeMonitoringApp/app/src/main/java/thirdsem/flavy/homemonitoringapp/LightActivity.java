@@ -1,9 +1,13 @@
 package thirdsem.flavy.homemonitoringapp;
 
+import android.bluetooth.BluetoothAdapter;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -13,23 +17,29 @@ import android.widget.Toast;
 
 public class LightActivity extends AppCompatActivity {
 
+    public final String TAG = "Light";
+
     private TextView switchStatus;
     private Switch mySwitch;
     private ColorPicker colorPicker;
-    private Button button;
+    private Button setColorButton;
+    private Button connectButtonL;
+
+    private Bluetooth bt;
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_light);
 
-        initializeComponents();
-    }
-
-    private void initializeComponents () {
+        connectButtonL = (Button) findViewById(R.id.connectButtonL);
+        colorPicker = (ColorPicker) findViewById(R.id.colorPicker);
+        setColorButton = (Button) findViewById(R.id.setColorButton);
         switchStatus = (TextView) findViewById(R.id.switchStatus);
         mySwitch = (Switch) findViewById(R.id.mySwitch);
         mySwitch.setChecked(false);
+
+        bt = new Bluetooth(this, mHandler);
 
         mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -38,17 +48,16 @@ public class LightActivity extends AppCompatActivity {
 
                 if (isChecked) {
                     switchStatus.setText("Switch is currently ON");
+                    bt.sendMessage("1");
                 } else {
                     switchStatus.setText("Switch is currently OFF");
+                    bt.sendMessage("0");
                 }
 
             }
         });
 
-        colorPicker = (ColorPicker) findViewById(R.id.colorPicker);
-
-        button = (Button) findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
+        setColorButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick (View v) {
@@ -58,9 +67,18 @@ public class LightActivity extends AppCompatActivity {
                 String rColor = "" + Color.red(color);
                 String gColor = "" + Color.green(color);
                 String bColor = "" + Color.blue(color);
+                String toSend = "#" + rColor + "+" + gColor + "+" + bColor + "+";
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("color", String.valueOf(color)).commit();
-                //Toast.makeText(LightActivity.this, rgbString, Toast.LENGTH_SHORT).show();
+                bt.sendMessage(toSend);
+                Toast.makeText(LightActivity.this, toSend, Toast.LENGTH_SHORT).show();
 
+            }
+        });
+
+        connectButtonL.setOnClickListener(new View.OnClickListener() {
+            public void onClick (View v) {
+                Toast.makeText(LightActivity.this, "plm", Toast.LENGTH_SHORT).show();
+                connectService();
             }
         });
     }
@@ -72,4 +90,42 @@ public class LightActivity extends AppCompatActivity {
         Toast.makeText(LightActivity.this, "Color: " + Integer.parseInt(color), Toast.LENGTH_SHORT).show();
         colorPicker.setColor(Integer.parseInt(color));
     }
+
+    /* Connecting the phone to the arduino board */
+    public void connectService(){
+        try {
+            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            if (bluetoothAdapter.isEnabled()) {
+                bt.connectDevice("HC-06");
+                Log.d(TAG, "Btservice started - listening");
+            } else {
+                Log.w(TAG, "Btservice started - bluetooth is not enabled");
+            }
+        } catch(Exception e){
+            Log.e(TAG, "Unable to start bt ", e);
+        }
+    }
+
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case Bluetooth.MESSAGE_STATE_CHANGE:
+                    Log.d(TAG, "MESSAGE_STATE_CHANGE: " + msg.arg1);
+                    break;
+                case Bluetooth.MESSAGE_WRITE:
+                    Log.d(TAG, "MESSAGE_WRITE ");
+                    break;
+                case Bluetooth.MESSAGE_READ:
+                    Log.d(TAG, "MESSAGE_READ ");
+                    break;
+                case Bluetooth.MESSAGE_DEVICE_NAME:
+                    Log.d(TAG, "MESSAGE_DEVICE_NAME "+msg);
+                    break;
+                case Bluetooth.MESSAGE_TOAST:
+                    Log.d(TAG, "MESSAGE_TOAST "+msg);
+                    break;
+            }
+        }
+    };
 }

@@ -32,7 +32,7 @@ import android.util.Log;
 
 public class Bluetooth {
     // Debugging
-    private static final String TAG = "wafl";
+    private static final String TAG = "home";
 
     // Name for the SDP record when creating server socket
     private static final String NAME = "BluetoothChat";
