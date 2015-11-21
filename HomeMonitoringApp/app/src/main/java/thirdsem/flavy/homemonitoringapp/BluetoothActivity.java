@@ -107,10 +107,6 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-
-
-
-
     /* Connecting the phone to the arduino board */
     private void connectDevice()
     {
@@ -131,11 +127,6 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-
-
-
-
-
     @Override
     public void onClick (View view) {
         switch (view.getId()) {
@@ -152,29 +143,5 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
                 bluetoothStatus.setText("Bluetooth status: disabled");
                 break;
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_flame, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent myIntent = new Intent( BluetoothActivity.this, MainActivity.class);
-            startActivity(myIntent);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

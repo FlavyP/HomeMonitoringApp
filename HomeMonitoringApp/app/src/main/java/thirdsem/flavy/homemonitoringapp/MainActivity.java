@@ -80,8 +80,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(flameIntent);
                 break;
             case R.id.buttonLights:
-                //Intent lightIntent = new Intent(MainActivity.this, LightActivity.class);
-                //startActivity(lightIntent);
+                Intent lightIntent = new Intent(MainActivity.this, LightActivity.class);
+                startActivity(lightIntent);
                 break;
             case R.id.buttonStatus:
                 Intent statusIntent = new Intent(MainActivity.this, StatusActivity.class);
