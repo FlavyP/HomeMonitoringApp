@@ -1,47 +1,104 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                tools:context="thirdsem.flavy.homemonitoringapp.BluetoothActivity">
+<FrameLayout android:id="@+id/root"
+             xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent">
 
-    <TextView
-        android:id="@+id/bluetoothStatus"
-        android:text="Bluetooth status: "
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/connectStatus"
-        android:text="Connect status: no connection"
+    <ImageView
+        android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/bluetoothStatus"/>
+        android:scaleType="centerCrop"
+        android:src="@drawable/homescreen"/>
 
-    <Button
-        android:id="@+id/enableButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Enable"
-        android:layout_below="@+id/connectStatus"/>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin"
+                    tools:context="thirdsem.flavy.homemonitoringapp.BluetoothActivity">
 
-    <Button
-        android:id="@+id/connectButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Connect"
-        android:layout_below="@id/connectStatus"
-        android:layout_toRightOf="@id/enableButton"/>
+        <LinearLayout
+            android:id="@+id/picLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
 
-    <Button
-        android:id="@+id/disableButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Disable"
-        android:layout_below="@+id/connectStatus"
-        android:layout_toRightOf="@id/connectButton"/>
+            <ImageView
+                android:id="@+id/picBluetooth"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:src="@drawable/nobluetooth1v2"/>
 
-</RelativeLayout>
+            <ImageView
+                android:id="@+id/picArduino"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:src="@drawable/noarduinov2"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/bluetoothStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bluetooth status: "
+            android:textColor="#ffffff"/>
+
+        <TextView
+            android:id="@+id/connectStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bluetoothStatus"
+            android:text="Connect status: no connection"
+            android:textColor="#ffffff"/>
+
+        <LinearLayout
+            android:id="@+id/buttonLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="45dp">
+
+
+            <Button
+                android:id="@+id/enableButton"
+                android:layout_width="100dp"
+                android:layout_height="35dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/roundedbutton"
+                android:text="Enable"
+                android:textColor="#ffffff"
+                android:textSize="10dp"
+                />
+
+            <Button
+                android:id="@+id/connectButton"
+                android:layout_width="100dp"
+                android:layout_height="35dp"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@id/enableButton"
+                android:background="@drawable/roundedbutton"
+                android:text="Connect"
+                android:textColor="#ffffff"
+                android:textSize="10dp"/>
+
+            <Button
+                android:id="@+id/disableButton"
+                android:layout_width="100dp"
+                android:layout_height="35dp"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@id/connectButton"
+                android:background="@drawable/roundedbutton"
+                android:text="Disable"
+                android:textColor="#ffffff"
+                android:textSize="10dp"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</FrameLayout>

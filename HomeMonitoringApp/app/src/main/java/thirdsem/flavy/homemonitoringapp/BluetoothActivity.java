@@ -1,18 +1,23 @@
 package thirdsem.flavy.homemonitoringapp;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
-import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class BluetoothActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -23,9 +28,14 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
     private TextView bluetoothStatus;
     private TextView connectStatus;
 
+    private ImageView bluetoothPic;
+    private ImageView arduinoPic;
+
     private BluetoothAdapter BA;
 
     private Bluetooth bt;
+
+    Set<BluetoothDevice> pairedDevices;
 
     public final String TAG = "Main";
 
@@ -45,13 +55,19 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
         enableButton = (Button) findViewById(R.id.enableButton);
         enableButton.setOnClickListener(this);
 
+
+        bluetoothPic = (ImageView) findViewById(R.id.picBluetooth);
+        arduinoPic = (ImageView) findViewById(R.id.picArduino);
+
         bluetoothStatus = (TextView) findViewById(R.id.bluetoothStatus);
         connectStatus = (TextView) findViewById(R.id.connectStatus);
 
         BA = BluetoothAdapter.getDefaultAdapter();
 
         bt = new Bluetooth(this, mHandler);
+        pairedDevices = BA.getBondedDevices();
     }
+
 
     private final Handler mHandler = new Handler() {
         @Override
@@ -79,12 +95,15 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
     /* Checking if the phone has or not bluetooth */
     private void checkForBluetooth()
     {
+        ImageView bluetoothPic = (ImageView) findViewById(R.id.picBluetooth);
         if(BA != null) {
             Toast.makeText(BluetoothActivity.this, "Phone supports BT", Toast.LENGTH_SHORT).show();
             if (!BA.isEnabled()) {
                 bluetoothStatus.setText("Bluetooth status: bluetooth not enabled");
+                bluetoothPic.setImageResource(R.drawable.nobluetooth1v2);
             } else {
                 bluetoothStatus.setText("Bluetooth status: bluetooth already enabled.");
+                bluetoothPic.setImageResource(R.drawable.bluetooth1);
             }
         }
         else
@@ -96,33 +115,44 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
     {
         if (!BA.isEnabled())
         {
+            bluetoothPic.setImageResource(R.drawable.nobluetooth1v2);
             bluetoothStatus.setText("Bluetooth status: bluetooth not enabled");
             Intent turnBluetoothOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(turnBluetoothOn, 0);
             bluetoothStatus.setText("Bluetooth status: bluetooth activated!");
+            bluetoothPic.setImageResource(R.drawable.bluetooth1);
         }
         else
         {
             bluetoothStatus.setText("Bluetooth status: bluetooth already enabled.");
+            bluetoothPic.setImageResource(R.drawable.bluetooth1);
         }
     }
 
     /* Connecting the phone to the arduino board */
-    private void connectDevice()
-    {
+    private void connectDevice () {
         try {
-            if(BA.isEnabled()) {
+            if (BA.isEnabled()) {
                 bt.connectDevice("HC-06");
-                Log.d(TAG, "Btservice started - listening");
-                connectStatus.setText("Connect status: connected to HC-06!");
+                if(bt.getConnection())
+                {
+                    Log.d(TAG, "Btservice started - listening");
+                    connectStatus.setText("Connect status: connected to HC-06!");
+                    arduinoPic.setImageResource(R.drawable.arduino);
+                }
+                else
+                {
+                    arduinoPic.setImageResource(R.drawable.noarduinov2);
+                    connectStatus.setText("Connect status: try again");
+                }
             } else {
+                bluetoothPic.setImageResource(R.drawable.bluetooth1);
                 Log.w(TAG, "Btservice started - bluetooth is not enabled");
                 Toast.makeText(BluetoothActivity.this, "Enable BT in order to connect", Toast.LENGTH_SHORT).show();
             }
-        }
-        catch (Exception e)
-        {
-            Log.e(TAG, "Unable to start bt ",e);
+        } catch (Exception e) {
+            bluetoothPic.setImageResource(R.drawable.bluetooth1);
+            Log.e(TAG, "Unable to start bt ", e);
             Toast.makeText(BluetoothActivity.this, "Unable to connect " + e, Toast.LENGTH_SHORT).show();
         }
     }
@@ -137,10 +167,12 @@ public class BluetoothActivity extends AppCompatActivity implements View.OnClick
                 connectDevice();
                 break;
             case R.id.disableButton:
-                bt.stop();
                 BA.disable();
-                connectStatus.setText("Connect status: disconnected");
-                bluetoothStatus.setText("Bluetooth status: disabled");
+                bt.stop();
+                bluetoothPic.setImageResource(R.drawable.nobluetooth1v2);
+                arduinoPic.setImageResource(R.drawable.noarduinov2);
+                bluetoothStatus.setText("Bluetooth status: not enabled.");
+                connectStatus.setText("Connect status: disconnected.");
                 break;
         }
     }
