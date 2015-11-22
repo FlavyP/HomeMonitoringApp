@@ -33,10 +33,6 @@
             android:label="@string/title_activity_flame" >
         </activity>
         <activity
-            android:name=".StatusActivity"
-            android:label="@string/title_activity_status" >
-        </activity>
-        <activity
             android:name=".LightActivity"
             android:label="@string/title_activity_light" >
         </activity>

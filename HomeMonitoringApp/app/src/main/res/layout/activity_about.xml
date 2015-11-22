@@ -1,168 +1,195 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center"
-              android:orientation="horizontal" >
-    <ScrollView
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:id="@+id/root"
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent">
+
+    <ImageView
+        android:id="@+id/imageView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:scrollbarStyle="outsideOverlay">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="250dp"
+        android:src="@drawable/homescreen"
+        android:scaleType="centerCrop"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:gravity="center"
+                  android:orientation="horizontal" >
+
+        <ScrollView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal" >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Profile"
-                android:textColor="#000000"
-                android:textSize="20dp"
-                />
+            android:orientation="vertical"
+            android:scrollbarStyle="outsideOverlay">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/yourNameInputLayout"
-                android:layout_width="fill_parent"
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp">
-
-                <EditText
-                    android:id="@+id/yourName"
+                android:gravity="center_horizontal" >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Profile"
+                    android:textColor="#ffffff"
+                    android:textSize="20dp"
+                    />
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/yourNameInputLayout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="15dp"
-                    android:textColorHint="#000000"
-                    android:textColor="#000000"
-                    android:inputType="text"
-                    android:hint="Your name"/>
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_marginTop="5dp"
+                    android:textColorHint="#ffffff"
+                    app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout"
+                    >
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/yourAddressInputLayout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp">
+                    <EditText
+                        android:id="@+id/yourName"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="15dp"
+                        android:textColorHint="#ffffff"
+                        android:textColor="#ffffff"
+                        android:inputType="text"
+                        android:hint="Your name"
+                        android:backgroundTint="#ffffff"/>
+                </android.support.design.widget.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/yourAddress"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/yourAddressInputLayout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:textColorHint="#000000"
-                    android:textColor="#000000"
-                    android:inputType="text"
-                    android:hint="Your address"/>
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_marginTop="5dp"
+                    android:textColorHint="#ffffff"
+                    app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/yourEmailInputLayout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp">
+                    <EditText
+                        android:id="@+id/yourAddress"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:textColorHint="#ffffff"
+                        android:textColor="#ffffff"
+                        android:inputType="text"
+                        android:hint="Your address"/>
+                </android.support.design.widget.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/yourEmail"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/yourEmailInputLayout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:textColorHint="#000000"
-                    android:textColor="#000000"
-                    android:inputType="text"
-                    android:hint="Your email"/>
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_marginTop="5dp"
+                    android:textColorHint="#ffffff">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/prefContactNameInputLayout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp">
+                    <EditText
+                        android:id="@+id/yourEmail"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:textColorHint="#ffffff"
+                        android:textColor="#ffffff"
+                        android:inputType="text"
+                        android:hint="Your email"/>
+                </android.support.design.widget.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/prefContactName"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/prefContactNameInputLayout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:textColorHint="#000000"
-                    android:textColor="#000000"
-                    android:inputType="text"
-                    android:hint="Contact name"/>
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_marginTop="5dp"
+                    android:textColorHint="#ffffff">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/prefContactEmailInputLayout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp">
+                    <EditText
+                        android:id="@+id/prefContactName"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:textColorHint="#ffffff"
+                        android:textColor="#ffffff"
+                        android:inputType="text"
+                        android:hint="Contact's name"/>
+                </android.support.design.widget.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/prefContactEmail"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/prefContactEmailInputLayout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:textColorHint="#000000"
-                    android:textColor="#000000"
-                    android:inputType="text"
-                    android:hint="Contact email"/>
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_marginTop="5dp"
+                    android:textColorHint="#ffffff">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/prefContactPhoneNumberInputLayout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp">
+                    <EditText
+                        android:id="@+id/prefContactEmail"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:textColorHint="#ffffff"
+                        android:textColor="#ffffff"
+                        android:inputType="text"
+                        android:hint="Contact's email"/>
+                </android.support.design.widget.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/prefContactPhoneNumber"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/prefContactPhoneNumberInputLayout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:textColorHint="#000000"
-                    android:textColor="#000000"
-                    android:inputType="text"
-                    android:hint="Contact phone number"/>
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_marginTop="5dp"
+                    android:textColorHint="#ffffff">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/emergencyMessageInputLayout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp">
+                    <EditText
+                        android:id="@+id/prefContactPhoneNumber"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:textColorHint="#ffffff"
+                        android:textColor="#ffffff"
+                        android:inputType="text"
+                        android:hint="Contact's phone number"/>
+                </android.support.design.widget.TextInputLayout>
 
-                <EditText
-                    android:id="@+id/emergencyMessage"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/emergencyMessageInputLayout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:textColorHint="#000000"
-                    android:textColor="#000000"
-                    android:inputType="text"
-                    android:hint="emergency message"/>
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_marginTop="5dp"
+                    android:textColorHint="#ffffff">
 
-            <Button
-                android:id="@+id/saveButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Save"
-                android:paddingBottom="15dp"
-                />
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+                    <EditText
+                        android:id="@+id/emergencyMessage"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:textColorHint="#ffffff"
+                        android:textColor="#ffffff"
+                        android:inputType="text"
+                        android:hint="Emergency message"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <Button
+                    android:id="@+id/saveButton"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:text="Save"
+                    android:textColor="#ffffff"
+                    android:textSize="10dp"
+                    android:background="@drawable/roundedbutton"/>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</FrameLayout>

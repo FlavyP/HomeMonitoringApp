@@ -51,6 +51,8 @@ public class Bluetooth {
     private SetupConnectingThread mConnectingThread;
     private CommunicationThread mCommunicatingThread;
 
+    private boolean connected = false;
+
     //Constructor with context and Handler for callback
     public Bluetooth(Context context, Handler handler) {
         mAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -126,6 +128,7 @@ public class Bluetooth {
                 mmSocket.connect();
             } catch (IOException e) {
                 Log.e(TAG,"Unable to connect socket ",e);
+                connected = false;
                 // Close the socket
                 try {
                     mmSocket.close();
@@ -179,6 +182,7 @@ public class Bluetooth {
         bundle.putString("Connected", device.getName());
         msg.setData(bundle);
         mHandler.sendMessage(msg);
+        connected = true;
     }
 
     //Stop all threads
@@ -210,6 +214,7 @@ public class Bluetooth {
     //Indicate that the connection attempt failed and notify the UI Activity.
     private void connectionFailed() {
         // Send a failure message back to the Activity
+        connected = false;
         Message msg = mHandler.obtainMessage(MESSAGE_TOAST);
         Bundle bundle = new Bundle();
         bundle.putString("Toast", "Unable to connect device");
@@ -307,5 +312,10 @@ public class Bluetooth {
             byte[] send = (message + EOT).getBytes();
             this.write(send);
         }
+    }
+
+    public boolean getConnection()
+    {
+        return connected;
     }
 }

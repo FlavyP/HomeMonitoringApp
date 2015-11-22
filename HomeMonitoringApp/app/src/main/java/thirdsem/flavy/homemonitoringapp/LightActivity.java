@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,8 +20,8 @@ public class LightActivity extends AppCompatActivity {
 
     public final String TAG = "Light";
 
-    private TextView switchStatus;
     private Switch mySwitch;
+    private ImageView bulb;
     private ColorPicker colorPicker;
     private Button setColorButton;
     private Button connectButtonL;
@@ -35,25 +36,29 @@ public class LightActivity extends AppCompatActivity {
         connectButtonL = (Button) findViewById(R.id.connectButtonL);
         colorPicker = (ColorPicker) findViewById(R.id.colorPicker);
         setColorButton = (Button) findViewById(R.id.setColorButton);
-        switchStatus = (TextView) findViewById(R.id.switchStatus);
         mySwitch = (Switch) findViewById(R.id.mySwitch);
+        bulb = (ImageView) findViewById(R.id.bulb);
         mySwitch.setChecked(false);
 
         bt = new Bluetooth(this, mHandler);
 
+        /*if(!bt.getConnection())
+        {
+            mySwitch.setVisibility(View.GONE);
+            colorPicker.setVisibility(View.GONE);
+        }*/
         mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged (CompoundButton buttonView, boolean isChecked) {
 
                 if (isChecked) {
-                    switchStatus.setText("Switch is currently ON");
-                    bt.sendMessage("1");
+                    bulb.setImageResource(R.drawable.bulbon);
+                    //bt.sendMessage("1");
                 } else {
-                    switchStatus.setText("Switch is currently OFF");
-                    bt.sendMessage("0");
+                    bulb.setImageResource(R.drawable.bulboff);
+                    //bt.sendMessage("0");
                 }
-
             }
         });
 
@@ -63,21 +68,18 @@ public class LightActivity extends AppCompatActivity {
             public void onClick (View v) {
 
                 int color = colorPicker.getColor();
-                String rgbString = "R: " + Color.red(color) + " G: " + Color.green(color) + " B: " + Color.blue(color);
                 String rColor = "" + Color.red(color);
                 String gColor = "" + Color.green(color);
                 String bColor = "" + Color.blue(color);
-                String toSend = "#" + rColor + "+" + gColor + "+" + bColor + "+";
+                String toSend = "#" + rColor + "+" + gColor + "+" + bColor + "X";
                 PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("color", String.valueOf(color)).commit();
                 bt.sendMessage(toSend);
                 Toast.makeText(LightActivity.this, toSend, Toast.LENGTH_SHORT).show();
-
             }
         });
 
         connectButtonL.setOnClickListener(new View.OnClickListener() {
             public void onClick (View v) {
-                Toast.makeText(LightActivity.this, "plm", Toast.LENGTH_SHORT).show();
                 connectService();
             }
         });
@@ -87,7 +89,6 @@ public class LightActivity extends AppCompatActivity {
     protected void onResume () {
         super.onResume();
         String color = PreferenceManager.getDefaultSharedPreferences(this).getString("color", "-1");
-        Toast.makeText(LightActivity.this, "Color: " + Integer.parseInt(color), Toast.LENGTH_SHORT).show();
         colorPicker.setColor(Integer.parseInt(color));
     }
 
@@ -97,9 +98,16 @@ public class LightActivity extends AppCompatActivity {
             BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
             if (bluetoothAdapter.isEnabled()) {
                 bt.connectDevice("HC-06");
+                if(!bt.getConnection())
+                    Toast.makeText(LightActivity.this, "Not connected, try again", Toast.LENGTH_SHORT).show();
+                else {
+                    mySwitch.setVisibility(View.VISIBLE);
+                    colorPicker.setVisibility(View.VISIBLE);
+                    Toast.makeText(LightActivity.this, "Connected", Toast.LENGTH_SHORT).show();
+                }
                 Log.d(TAG, "Btservice started - listening");
             } else {
-                Log.w(TAG, "Btservice started - bluetooth is not enabled");
+                Toast.makeText(LightActivity.this, "Enable Bluetooth", Toast.LENGTH_SHORT).show();
             }
         } catch(Exception e){
             Log.e(TAG, "Unable to start bt ", e);
