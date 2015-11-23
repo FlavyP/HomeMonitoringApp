@@ -83,7 +83,6 @@ public class FlameActivity extends Activity {
 
         //simple fire animation triggered by "red" input from arduino
         ImageView myView = (ImageView)findViewById(R.id.imageView);
-        myView.setBackgroundResource(R.drawable.fire4);
         ObjectAnimator fadeOut = ObjectAnimator.ofFloat(myView, "alpha",  1f, .3f);
         fadeOut.setDuration(2000);
         ObjectAnimator fadeIn = ObjectAnimator.ofFloat(myView, "alpha", .3f, 1f);
@@ -105,18 +104,18 @@ public class FlameActivity extends Activity {
 
         if (mNfcAdapter == null) {
             Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
-            finish();
+            //finish();
             return;
 
         }
 
         if (!mNfcAdapter.isEnabled())
         {
-            Toast.makeText(this, "NFC is disabled", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "NFC is disabled", Toast.LENGTH_LONG).show();
         }
         else
         {
-            Toast.makeText(this, "NFC is enabled", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "NFC is enabled", Toast.LENGTH_LONG).show();
         }
 
         //connectService();
@@ -145,7 +144,7 @@ public class FlameActivity extends Activity {
             public void onClick(View v) {
 
                 Intent myIntent = new Intent(Intent.ACTION_CALL);
-                String phNum = "tel:" + "1234567890";
+                String phNum = "tel:" + numb;
                 myIntent.setData(Uri.parse(phNum));
                 startActivity( myIntent ) ;
 
@@ -158,21 +157,31 @@ public class FlameActivity extends Activity {
                 if (msg.what == handlerState) {                                     //if message is what we want
                     String readMessage = (String) msg.obj;                                                                // msg.arg1 = bytes from connect thread
                     recDataString.append(readMessage);                                      //keep appending to string until ~
-                    Toast.makeText(getBaseContext(), "Message " + recDataString, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getBaseContext(), "Message " + recDataString, Toast.LENGTH_SHORT).show();
                     int endOfLineIndex = recDataString.indexOf("~");                    // determine the end-of-line
-                    Toast.makeText(FlameActivity.this, "End of line: " + endOfLineIndex, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(FlameActivity.this, "End of line: " + endOfLineIndex, Toast.LENGTH_SHORT).show();
                     txtmsg.setText("Data Received = " + recDataString);
                     if (endOfLineIndex > 0) {                                           // make sure there data before ~
-                        String dataInPrint = recDataString.substring(1, 4);    // extract string
+                        String dataInPrint = recDataString.substring(1, endOfLineIndex);    // extract string
                         message = dataInPrint;
-                        txtmsg.setText("Data Received = /" + dataInPrint +"/");
+                        txtmsg.setText("Data Received = /" + dataInPrint + "/");
                         int dataLength = dataInPrint.length();                          //get length of data received
                         txtmsg.append("\nString Length = " + String.valueOf(dataLength));
                         recDataString.delete(0, recDataString.length());
 
                         flame.setText(dataInPrint);
-
-
+                        //this if statement might need to be inside the handler, wasnt sure where to place it xd
+                        if ( flame.getText().equals("red")) {
+                            messageTxv.setText("alarm, alarm, alarm");
+                            mAnimationSet.start();
+                            startPlaying();
+                        }
+                        else {
+                            messageTxv.setText("Alarm stopped");
+                            mAnimationSet.end();
+                            // myView.setVisibility(View.INVISIBLE);
+                            stopPlaying();
+                        }
 
                     }
                 }
@@ -180,31 +189,32 @@ public class FlameActivity extends Activity {
         };
 
 
-        //this if statement might need to be inside the handler, wasnt sure where to place it xd
-        String color = "";
-        if(message.contains("red"))
-        {
-            color = "red";
-        }
-        if ( color.equals("red")) {
-            messageTxv.setText("alarm, alarm, alarm");
-            mAnimationSet.start();
-            mySound.start();
-        } /*else {
-            messageTxv.setText("alarm is off , ALL OK");
-            mAnimationSet.end();
-            // myView.setVisibility(View.INVISIBLE);
-            mySound.release();
-        }*/
 
         btAdapter = BluetoothAdapter.getDefaultAdapter();       // get Bluetooth adapter
         checkBTState();
     }
 
+
+
     private BluetoothSocket createBluetoothSocket(BluetoothDevice device) throws IOException {
 
         return  device.createRfcommSocketToServiceRecord(BTMODULEUUID);
         //creates secure outgoing connecetion with BT device using UUID
+    }
+
+    private void startPlaying() {
+        stopPlaying();
+        mySound = MediaPlayer.create(this, R.raw.fire);
+        mySound.start();
+
+    }
+
+    private void stopPlaying() {
+        if (mySound != null) {
+            mySound.stop();
+            mySound.release();
+            mySound = null;
+        }
     }
 
     @Override
@@ -217,7 +227,7 @@ public class FlameActivity extends Activity {
         }
         else
         {
-            Toast.makeText(this, "NFC is enabled", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "NFC is enabled", Toast.LENGTH_LONG).show();
         }
 
         Intent intent = new Intent(this, MainActivity.class);
@@ -233,9 +243,9 @@ public class FlameActivity extends Activity {
 
         try {
             btSocket = createBluetoothSocket(device);
-            Toast.makeText(FlameActivity.this, "Connected", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(FlameActivity.this, "Connected", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
-            Toast.makeText(getBaseContext(), "Socket creation failed", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getBaseContext(), "Socket creation failed", Toast.LENGTH_LONG).show();
         }
         // Establish the Bluetooth socket connection.
         try
@@ -265,7 +275,7 @@ public class FlameActivity extends Activity {
 
         mNfcAdapter.disableForegroundDispatch(this);
 
-        mySound.release();
+        stopPlaying();
         try
         {
             //Don't leave Bluetooth sockets open when leaving activity
@@ -285,10 +295,10 @@ public class FlameActivity extends Activity {
     private void checkBTState() {
 
         if(btAdapter==null) {
-            Toast.makeText(getBaseContext(), "Device does not support bluetooth", Toast.LENGTH_LONG).show();
+            //Toast.makeText(getBaseContext(), "Device does not support bluetooth", Toast.LENGTH_LONG).show();
         } else {
             if (btAdapter.isEnabled()) {
-                Toast.makeText(getBaseContext(), "BT is already Enabled", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getBaseContext(), "BT is already Enabled", Toast.LENGTH_LONG).show();
             } else {
                 Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(enableBtIntent, 1);
@@ -302,14 +312,14 @@ public class FlameActivity extends Activity {
     {
         SmsManager sms = SmsManager.getDefault();
         sms.sendTextMessage(phNumber, null, message, null, null);
-        Toast.makeText(this, "Message sendSms", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Message sendSms", Toast.LENGTH_LONG).show();
     }
 
     @Override
     protected void onDestroy(){
         super.onDestroy();
 
-        mySound.release();
+        stopPlaying();
     }
 
     @Override
@@ -368,6 +378,7 @@ public class FlameActivity extends Activity {
         {
             Log.e("getTextFromNdefRecord", e.getMessage(), e);
         }
+        Toast.makeText(FlameActivity.this, tagContent, Toast.LENGTH_SHORT).show();
         return tagContent;
     }
 

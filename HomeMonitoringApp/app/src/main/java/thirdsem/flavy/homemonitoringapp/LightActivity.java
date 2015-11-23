@@ -54,10 +54,10 @@ public class LightActivity extends AppCompatActivity {
 
                 if (isChecked) {
                     bulb.setImageResource(R.drawable.bulbon);
-                    //bt.sendMessage("1");
+                    bt.sendMessage("1");
                 } else {
                     bulb.setImageResource(R.drawable.bulboff);
-                    //bt.sendMessage("0");
+                    bt.sendMessage("0");
                 }
             }
         });
