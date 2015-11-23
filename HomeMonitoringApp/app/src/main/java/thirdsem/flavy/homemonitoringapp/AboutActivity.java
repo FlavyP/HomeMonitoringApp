@@ -22,13 +22,11 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
 
     private EditText yourName;
     private EditText yourAddress;
-    private EditText yourEmail;
     private EditText prefContactName;
-    private EditText prefContactEmail;
     private EditText prefContactPhoneNumber;
     private EditText emergencyMessage;
 
-    private boolean[] canBeSaved = new boolean[7];
+    private boolean[] canBeSaved = new boolean[5];
 
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -36,7 +34,6 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_about);
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN); //Stop opening the keyboard when entering
-
 
         initializeComponents();
     }
@@ -53,17 +50,9 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
         yourAddress.addTextChangedListener(this);
         yourAddress.setError("Required");
 
-        yourEmail = (EditText) findViewById(R.id.yourEmail);
-        yourEmail.addTextChangedListener(this);
-        yourEmail.setError("Required");
-
         prefContactName = (EditText) findViewById(R.id.prefContactName);
         prefContactName.addTextChangedListener(this);
         prefContactName.setError("Required");
-
-        prefContactEmail = (EditText) findViewById(R.id.prefContactEmail);
-        prefContactEmail.addTextChangedListener(this);
-        prefContactEmail.setError("Required");
 
         prefContactPhoneNumber = (EditText) findViewById(R.id.prefContactPhoneNumber);
         prefContactPhoneNumber.addTextChangedListener(this);
@@ -81,14 +70,8 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
         String address = yourAddress.getText().toString();
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("address", address).commit();
 
-        String yEmail = yourEmail.getText().toString();
-        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("yEmail", yEmail).commit();
-
         String cName = prefContactName.getText().toString();
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("cName", cName).commit();
-
-        String cEmail = prefContactEmail.getText().toString();
-        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("cEmail", cEmail).commit();
 
         String cPhoneNumber = prefContactPhoneNumber.getText().toString();
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("cPhoneNumber", cPhoneNumber).commit();
@@ -97,12 +80,10 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString("message", message).commit();
     }
 
-    private void setAbout (String name, String address, String yEmail, String cName, String cEmail, String cPhoneNumber, String message) {
+    private void setAbout (String name, String address, String cName, String cPhoneNumber, String message) {
         yourName.setText(name);
         yourAddress.setText(address);
-        yourEmail.setText(yEmail);
         prefContactName.setText(cName);
-        prefContactEmail.setText(cEmail);
         prefContactPhoneNumber.setText(cPhoneNumber);
         emergencyMessage.setText(message);
     }
@@ -127,72 +108,38 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
             canBeSaved[1] = false;
         }
 
-        if (!yourEmail.getText().toString().isEmpty()){
-            yourEmail.setError(null);
-            canBeSaved[2] = true;
-            if(isEmailValid(yourEmail.getText().toString()) == false)
-            {
-                yourEmail.setError("Email not valid");
-                canBeSaved[2] = false;
-            }
-            else if(isEmailValid(yourEmail.getText().toString())){
-                canBeSaved[2] = true;
-            }
-        }
-        else{
-            yourEmail.setError("Required");
-            canBeSaved[2] = false;
-        }
-
         if (!prefContactName.getText().toString().isEmpty()){
             prefContactName.setError(null);
-            canBeSaved[3] = true;
+            canBeSaved[2] = true;
         }
         else{
             prefContactName.setError("Required");
-            canBeSaved[3] = false;
-        }
-
-        if (!prefContactEmail.getText().toString().isEmpty()){
-            prefContactEmail.setError(null);
-            canBeSaved[4] = true;
-            if(isEmailValid(prefContactEmail.getText().toString()) == false)
-            {
-                prefContactEmail.setError("Email not valid");
-                canBeSaved[4] = false;
-            }
-            else if(isEmailValid(prefContactEmail.getText().toString())){
-                canBeSaved[4] = true;
-            }
-        }
-        else{
-            prefContactEmail.setError("Required");
-            canBeSaved[4] = false;
+            canBeSaved[2] = false;
         }
 
         if (!prefContactPhoneNumber.getText().toString().isEmpty())
         {
             prefContactPhoneNumber.setError(null);
-            canBeSaved[5] = true;
+            canBeSaved[3] = true;
             if(isPhoneNumberValid(prefContactPhoneNumber.getText().toString()) == false)
             {
                 prefContactPhoneNumber.setError("Enter valid phone number");
-                canBeSaved[5] = false;
+                canBeSaved[3] = false;
             }
         }
         else
         {
             prefContactPhoneNumber.setError("Required");
-            canBeSaved[5] = false;
+            canBeSaved[3] = false;
         }
 
         if (!emergencyMessage.getText().toString().isEmpty()){
             emergencyMessage.setError(null);
-            canBeSaved[6] = true;
+            canBeSaved[4] = true;
         }
         else{
             emergencyMessage.setError("Required");
-            canBeSaved[6] = false;
+            canBeSaved[4] = false;
         }
     }
 
@@ -206,11 +153,6 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
         return true;
     }
 
-    private boolean isEmailValid(String email)
-    {
-        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-
     private boolean isPhoneNumberValid(String phoneNumber)
     {
         return !TextUtils.isEmpty(phoneNumber) && android.util.Patterns.PHONE.matcher(phoneNumber).matches();
@@ -222,13 +164,11 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
 
         String name = PreferenceManager.getDefaultSharedPreferences(this).getString("name", "");
         String address = PreferenceManager.getDefaultSharedPreferences(this).getString("address", "");
-        String yEmail = PreferenceManager.getDefaultSharedPreferences(this).getString("yEmail", "");
         String cName = PreferenceManager.getDefaultSharedPreferences(this).getString("cName", "");
-        String cEmail = PreferenceManager.getDefaultSharedPreferences(this).getString("cEmail", "");
         String cPhoneNumber = PreferenceManager.getDefaultSharedPreferences(this).getString("cPhoneNumber", "");
         String message = PreferenceManager.getDefaultSharedPreferences(this).getString("message", "");
 
-        setAbout(name, address, yEmail, cName, cEmail, cPhoneNumber, message);
+        setAbout(name, address, cName, cPhoneNumber, message);
         checkText();
 
     }

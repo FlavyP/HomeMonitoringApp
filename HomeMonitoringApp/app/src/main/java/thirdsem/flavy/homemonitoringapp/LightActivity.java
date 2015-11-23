@@ -92,6 +92,12 @@ public class LightActivity extends AppCompatActivity {
         colorPicker.setColor(Integer.parseInt(color));
     }
 
+    @Override
+    protected void onStop () {
+        super.onStop();
+        bt.stop();
+    }
+
     /* Connecting the phone to the arduino board */
     public void connectService(){
         try {
