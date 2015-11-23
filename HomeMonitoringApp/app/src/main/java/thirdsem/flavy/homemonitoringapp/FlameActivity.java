@@ -40,7 +40,7 @@ public class FlameActivity extends Activity {
     public final String TAG = "Main";
     private static final String TAGNFC = "NFC";
 
-    private Button sendSms,sendEmail, dismiss, emrgcall;
+    private Button sendSms,dismiss, emrgcall;
     private Bluetooth bt;
     private String numb, msg;
     private String mail;
@@ -69,7 +69,6 @@ public class FlameActivity extends Activity {
 
         numb = PreferenceManager.getDefaultSharedPreferences(this).getString("cPhoneNumber", "");
         msg = PreferenceManager.getDefaultSharedPreferences(this).getString("message", "");
-        mail = PreferenceManager.getDefaultSharedPreferences(this).getString("cEmail", "");
         mySound = MediaPlayer.create(this, R.raw.fire);
 
 
@@ -126,15 +125,6 @@ public class FlameActivity extends Activity {
             public void onClick(View v) {
                 sendSms(numb, msg);
                 Toast.makeText(FlameActivity.this, "Send to " + numb, Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        sendEmail = (Button) findViewById(R.id.btnEmail);
-        sendEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendEmail(mail, msg);
-                Toast.makeText(FlameActivity.this, "mail: " + mail, Toast.LENGTH_LONG).show();
             }
         });
 
@@ -199,14 +189,6 @@ public class FlameActivity extends Activity {
 
         btAdapter = BluetoothAdapter.getDefaultAdapter();       // get Bluetooth adapter
         checkBTState();
-
-
-
-
-        //  bt = new Bluetooth(this, mHandler);  //works with the handler bellow
-
-
-
     }
 
     private BluetoothSocket createBluetoothSocket(BluetoothDevice device) throws IOException {
@@ -283,6 +265,12 @@ public class FlameActivity extends Activity {
         }
     }
 
+    @Override
+    protected void onStop () {
+        super.onStop();
+        //Something to close connection
+    }
+
     //Checks that the Android device Bluetooth is available and prompts to be turned on if off
     private void checkBTState() {
 
@@ -307,71 +295,12 @@ public class FlameActivity extends Activity {
         Toast.makeText(this, "Message sendSms", Toast.LENGTH_LONG).show();
     }
 
-    private void sendEmail(String mailTo, String message)
-    {
-        Intent implicitIntent = new Intent(Intent.ACTION_SEND);
-        implicitIntent.setType("message/rfc822");
-        implicitIntent.putExtra(Intent.EXTRA_EMAIL, new String[] {mailTo});
-        implicitIntent.putExtra(Intent.EXTRA_SUBJECT, "HELP!");
-        implicitIntent.putExtra(Intent.EXTRA_TEXT, message);
-        startActivity(implicitIntent);
-    }
-
-
-
-
-    //stop the upper handler to test this one and unlock bt. in onCreate
-
-    //    private final Handler mHandler = new Handler() {
-    //        @Override
-    //        public void handleMessage(Message msg) {
-    //            switch (msg.what) {
-    //                case Bluetooth.MESSAGE_STATE_CHANGE:
-    //                    Log.d(TAG, "MESSAGE_STATE_CHANGE: " + msg.arg1);
-    //                    break;
-    //                case Bluetooth.MESSAGE_WRITE:
-    //                    Log.d(TAG, "MESSAGE_WRITE ");
-    //                    break;
-    //                case Bluetooth.MESSAGE_READ:
-    //                    Log.d(TAG, "MESSAGE_READ ");
-    //                    if (msg.what == handlerState) {                                     //if message is what we want
-    //                        String readMessage = (String) msg.obj;                                                                // msg.arg1 = bytes from connect thread
-    //                        recDataString.append(readMessage);                                      //keep appending to string until ~
-    //                        //Toast.makeText(getBaseContext(), "Message " + recDataString, Toast.LENGTH_SHORT).show();
-    //                        int endOfLineIndex = recDataString.indexOf("~");                    // determine the end-of-line
-    //                        txtmsg.setText("Data Received = " + recDataString);
-    //                        if (endOfLineIndex > 0) {                                           // make sure there data before ~
-    //                            String dataInPrint = recDataString.substring(1, endOfLineIndex);    // extract string
-    //                            txtmsg.setText("Data Received = " + dataInPrint);
-    //                            int dataLength = dataInPrint.length();                          //get length of data received
-    //                            txtmsg.setText("String Length = " + String.valueOf(dataLength));
-    //                            recDataString.delete(0, recDataString.length());
-    //
-    //                            flame.setText(dataInPrint);
-    //
-    //
-    //                    break;
-    //                case Bluetooth.MESSAGE_DEVICE_NAME:
-    //                    Log.d(TAG, "MESSAGE_DEVICE_NAME "+msg);
-    //                    break;
-    //                case Bluetooth.MESSAGE_TOAST:
-    //                    Log.d(TAG, "MESSAGE_TOAST " + msg);
-    //                    break;
-    //            }
-    //        }
-    //    };
-
-
-
-
     @Override
     protected void onDestroy(){
         super.onDestroy();
 
         mySound.release();
     }
-
-
 
     public void playSound(View view){
 
@@ -453,34 +382,6 @@ public class FlameActivity extends Activity {
             Log.e(TAG, "Unable to start bt ", e);
         }
     }
-
-    private final Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case Bluetooth.MESSAGE_STATE_CHANGE:
-                    Log.d(TAG, "MESSAGE_STATE_CHANGE: " + msg.arg1);
-                    break;
-                case Bluetooth.MESSAGE_WRITE:
-                    Log.d(TAG, "MESSAGE_WRITE ");
-                    break;
-                case Bluetooth.MESSAGE_READ:
-                    Log.d(TAG, "MESSAGE_READ ");
-                    break;
-                case Bluetooth.MESSAGE_DEVICE_NAME:
-                    Log.d(TAG, "MESSAGE_DEVICE_NAME "+msg);
-                    break;
-                case Bluetooth.MESSAGE_TOAST:
-                    Log.d(TAG, "MESSAGE_TOAST "+msg);
-                    break;
-            }
-        }
-    };
-
-
-
-
-
 
     private class ConnectedThread extends Thread {
         private final InputStream mmInStream;

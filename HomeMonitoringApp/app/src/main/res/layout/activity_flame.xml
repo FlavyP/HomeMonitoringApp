@@ -1,7 +1,8 @@
-<FrameLayout android:id="@+id/root"
-             xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="fill_parent"
-             android:layout_height="fill_parent">
+<FrameLayout
+    android:id="@+id/root"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
     <ImageView
         android:id="@+id/imageView1"
@@ -11,74 +12,76 @@
         android:src="@drawable/homescreen"/>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-                    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"
                     android:paddingTop="@dimen/activity_vertical_margin"
-                    android:paddingBottom="@dimen/activity_vertical_margin"
                     tools:context="thirdsem.flavy.homemonitoringapp.FlameActivity">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="txtSendTo"
-            android:textColor="#ffffff"
             android:id="@+id/txtSendTo"
-            android:layout_below="@+id/textView4"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="txtmsg"
-            android:id="@+id/txtmsg"
-            android:textColor="#ffffff"
-            android:layout_below="@+id/textView5"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Send To:"
-            android:textColor="#ffffff"
-            android:id="@+id/textView4"
-            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView4"
+            android:text="txtSendTo"
+            android:textColor="#ffffff"/>
+
+        <TextView
+            android:id="@+id/txtmsg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView5"
+            android:text="txtmsg"
+            android:textColor="#ffffff"/>
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:text="Send To:"
+            android:textColor="#ffffff"
             android:textStyle="bold"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Message:"
-            android:textColor="#ffffff"
             android:id="@+id/textView5"
-            android:layout_marginTop="36dp"
-            android:textStyle="bold"
-            android:layout_below="@+id/txtSendTo"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Flame Sensor is: "
-            android:textColor="#ffffff"
-            android:id="@+id/FlameSensorTextView"
-            android:layout_below="@+id/txtmsg"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="24dp" />
+            android:layout_below="@+id/txtSendTo"
+            android:layout_marginTop="36dp"
+            android:text="Message:"
+            android:textColor="#ffffff"
+            android:textStyle="bold"/>
 
-        <ImageView
+        <TextView
+            android:id="@+id/FlameSensorTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/txtmsg"
+            android:layout_marginTop="24dp"
+            android:text="Flame Sensor is: "
+            android:textColor="#ffffff"/>
+
+        <ImageView
             android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/FlameSensorTextView"
-            android:layout_toEndOf="@+id/FlameSensorTextView" />
+            android:layout_toEndOf="@+id/FlameSensorTextView"
+            android:layout_toRightOf="@+id/FlameSensorTextView"/>
 
         <RelativeLayout
             android:id="@+id/buttonLayout"
@@ -103,21 +106,9 @@
                 android:layout_height="35dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginLeft="3dp"
-                android:layout_toRightOf="@+id/btnS"
+                android:layout_toRightOf="@+id/btnDismiss"
                 android:background="@drawable/roundedbutton"
                 android:text="Call"
-                android:textColor="#ffffff"
-                android:textSize="10dp"/>
-
-            <Button
-                android:id="@+id/btnEmail"
-                android:layout_width="100dp"
-                android:layout_height="35dp"
-                android:layout_marginLeft="3dp"
-                android:layout_toEndOf="@+id/btnEmrgcall"
-                android:layout_toRightOf="@+id/btnEmrgcall"
-                android:background="@drawable/roundedbutton"
-                android:text="Send email"
                 android:textColor="#ffffff"
                 android:textSize="10dp"/>
 
@@ -126,9 +117,9 @@
                 android:layout_width="100dp"
                 android:layout_height="35dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="3dp"
+                android:layout_marginLeft="3dp"
+                android:layout_toRightOf="@+id/btnS"
                 android:background="@drawable/roundedbutton"
-                android:layout_below="@+id/btnEmrgcall"
                 android:text="Dismiss"
                 android:textColor="#ffffff"
                 android:textSize="10dp"/>
@@ -136,7 +127,6 @@
         </RelativeLayout>
 
     </RelativeLayout>
-
 
 
 </FrameLayout>
