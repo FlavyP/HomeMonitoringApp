@@ -5,16 +5,24 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,11 +32,14 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
 public class FlameActivity extends Activity {
 
     public final String TAG = "Main";
+    private static final String TAGNFC = "NFC";
+
     private Button sendSms,sendEmail, dismiss, emrgcall;
     private Bluetooth bt;
     private String numb, msg;
@@ -37,7 +48,7 @@ public class FlameActivity extends Activity {
     private TextView txtmsg;
     Handler bluetoothIn;
     MediaPlayer mySound;
-
+    private NfcAdapter mNfcAdapter;
     final int handlerState = 0;                        //used to identify handler message
     private BluetoothAdapter btAdapter = null;
     private BluetoothSocket btSocket = null;
@@ -90,6 +101,24 @@ public class FlameActivity extends Activity {
             }
         });
 
+        if (mNfcAdapter == null) {
+            Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
+            finish();
+            return;
+
+        }
+
+        if (!mNfcAdapter.isEnabled())
+        {
+            Toast.makeText(this, "NFC is disabled", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(this, "NFC is enabled", Toast.LENGTH_LONG).show();
+        }
+
+        connectService();
+
 
         sendSms = (Button) findViewById(R.id.btnS);
         sendSms.setOnClickListener(new View.OnClickListener() {
@@ -114,7 +143,7 @@ public class FlameActivity extends Activity {
         dismiss.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 mConnectedThread.write("9");    // Send "9" via Bluetooth to stop the alarm
-                Toast.makeText(getBaseContext(), "Turn off LED", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "Alarmed turned off", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -190,6 +219,23 @@ public class FlameActivity extends Activity {
     public void onResume() {
         super.onResume();
 
+        if (!mNfcAdapter.isEnabled())
+        {
+            Toast.makeText(this, "NFC is disabled", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(this, "NFC is enabled", Toast.LENGTH_LONG).show();
+        }
+
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        IntentFilter[] intentFilter = new IntentFilter[]{};
+
+        mNfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFilter, null);
+
         //create device and set the MAC address
         BluetoothDevice device = btAdapter.getRemoteDevice(address);
 
@@ -224,6 +270,9 @@ public class FlameActivity extends Activity {
     public void onPause()
     {
         super.onPause();
+
+        mNfcAdapter.disableForegroundDispatch(this);
+
         mySound.release();
         try
         {
@@ -330,7 +379,103 @@ public class FlameActivity extends Activity {
 
     }
 
+    @Override
+    protected void onNewIntent(Intent intent)
+    {
+        super.onNewIntent(intent);
 
+        //If tag received
+        if(intent.hasExtra(NfcAdapter.EXTRA_TAG))
+        {
+            Toast.makeText(this, "NFC intent received", Toast.LENGTH_SHORT).show();
+        }
+        //Get the tag
+        Parcelable[] parceables = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
+        if(parceables != null && parceables.length > 0)
+        {
+            readTextFromMessage((NdefMessage) parceables[0]);
+        }
+        else
+        {
+            Toast.makeText(this, "No message", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void readTextFromMessage(NdefMessage ndefMsg)
+    {
+        NdefRecord[] ndefRecs = ndefMsg.getRecords();
+        if(ndefRecs != null && ndefRecs.length > 0)
+        {
+            NdefRecord ndefRec = ndefRecs[0];
+            String tagContent = getTextFromNdefRecord(ndefRec);
+
+            if(tagContent.equals("FIRE!"))
+            {
+                Toast.makeText(this, tagContent, Toast.LENGTH_SHORT).show();
+                bt.sendMessage("9");
+            }
+        }
+        else
+        {
+            Toast.makeText(this, "No ndef Records found", Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+    private String getTextFromNdefRecord(NdefRecord ndefRec)
+    {
+        String tagContent = null;
+        try{
+            byte[] payload = ndefRec.getPayload();
+            String textEncoding = "UTF-8";
+            int languageSize = payload[0] & 0063;
+            tagContent = new String(payload, languageSize +1, payload.length - languageSize-1, textEncoding);
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            Log.e("getTextFromNdefRecord", e.getMessage(), e);
+        }
+        return tagContent;
+    }
+
+    public void connectService()
+    {
+        try {
+            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            if (bluetoothAdapter.isEnabled()) {
+                bt.connectDevice("HC-06");
+                Toast.makeText(this, "Connected?", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "Btservice started - listening");
+            } else {
+                Log.w(TAG, "Btservice started - bluetooth is not enabled");
+            }
+        } catch(Exception e){
+            Log.e(TAG, "Unable to start bt ", e);
+        }
+    }
+
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case Bluetooth.MESSAGE_STATE_CHANGE:
+                    Log.d(TAG, "MESSAGE_STATE_CHANGE: " + msg.arg1);
+                    break;
+                case Bluetooth.MESSAGE_WRITE:
+                    Log.d(TAG, "MESSAGE_WRITE ");
+                    break;
+                case Bluetooth.MESSAGE_READ:
+                    Log.d(TAG, "MESSAGE_READ ");
+                    break;
+                case Bluetooth.MESSAGE_DEVICE_NAME:
+                    Log.d(TAG, "MESSAGE_DEVICE_NAME "+msg);
+                    break;
+                case Bluetooth.MESSAGE_TOAST:
+                    Log.d(TAG, "MESSAGE_TOAST "+msg);
+                    break;
+            }
+        }
+    };
 
 
 
