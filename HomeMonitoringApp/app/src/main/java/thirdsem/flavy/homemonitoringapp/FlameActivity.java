@@ -43,7 +43,7 @@ public class FlameActivity extends Activity {
     private Button sendSms,dismiss, emrgcall;
     private String numb, msg;
     private String message;
-    private TextView sendto, flame , messageTxv;
+    private TextView sendto, flame , messageTxv, statusView;
     private TextView txtmsg;
     Handler bluetoothIn;
     MediaPlayer mySound;
@@ -77,6 +77,7 @@ public class FlameActivity extends Activity {
         sendto = (TextView) findViewById(R.id.txtSendTo);
         txtmsg = (TextView) findViewById(R.id.txtmsg);
         flame  = (TextView) findViewById(R.id.FlameSensorTextView);
+        statusView = (TextView) findViewById(R.id.statusView);
         messageTxv = (TextView) findViewById(R.id.textView5);
         sendto.setText(numb);
         txtmsg.setText(msg);
@@ -111,7 +112,7 @@ public class FlameActivity extends Activity {
 
         if (!mNfcAdapter.isEnabled())
         {
-            //Toast.makeText(this, "NFC is disabled", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "NFC is disabled", Toast.LENGTH_LONG).show();
         }
         else
         {
@@ -146,9 +147,9 @@ public class FlameActivity extends Activity {
                 Intent myIntent = new Intent(Intent.ACTION_CALL);
                 String phNum = "tel:" + numb;
                 myIntent.setData(Uri.parse(phNum));
-                startActivity( myIntent ) ;
+                startActivity(myIntent) ;
 
-                Toast.makeText(getBaseContext(), "911 help", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(), "911 help", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -168,16 +169,15 @@ public class FlameActivity extends Activity {
                         int dataLength = dataInPrint.length();                          //get length of data received
                         txtmsg.append("\nString Length = " + String.valueOf(dataLength));
                         recDataString.delete(0, recDataString.length());
-
-                        flame.setText(dataInPrint);
+                        flame.setText("Flame sensor status: " + dataInPrint);
                         //this if statement might need to be inside the handler, wasnt sure where to place it xd
-                        if ( flame.getText().equals("red")) {
-                            messageTxv.setText("alarm, alarm, alarm");
+                        if ( dataInPrint.equals("red")) {
+                            statusView.setText("Status:\nAlarm triggered!");
                             mAnimationSet.start();
                             startPlaying();
                         }
                         else {
-                            messageTxv.setText("Alarm stopped");
+                            statusView.setText("Status\nAlarm stopped!");
                             mAnimationSet.end();
                             // myView.setVisibility(View.INVISIBLE);
                             stopPlaying();
@@ -295,7 +295,7 @@ public class FlameActivity extends Activity {
     private void checkBTState() {
 
         if(btAdapter==null) {
-            //Toast.makeText(getBaseContext(), "Device does not support bluetooth", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "Device does not support bluetooth", Toast.LENGTH_LONG).show();
         } else {
             if (btAdapter.isEnabled()) {
                 //Toast.makeText(getBaseContext(), "BT is already Enabled", Toast.LENGTH_LONG).show();
@@ -330,7 +330,7 @@ public class FlameActivity extends Activity {
         //If tag received
         if(intent.hasExtra(NfcAdapter.EXTRA_TAG))
         {
-            Toast.makeText(this, "NFC intent received", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "NFC intent received", Toast.LENGTH_SHORT).show();
         }
         //Get the tag
         Parcelable[] parceables = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
@@ -340,7 +340,7 @@ public class FlameActivity extends Activity {
         }
         else
         {
-            Toast.makeText(this, "No message", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "No message", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -354,13 +354,14 @@ public class FlameActivity extends Activity {
 
             if(tagContent.equals("FIRE!"))
             {
-                Toast.makeText(this, tagContent, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, tagContent, Toast.LENGTH_SHORT).show();
+                Toast.makeText(FlameActivity.this, "Alarm dismissed", Toast.LENGTH_SHORT).show();
                 mConnectedThread.write("9");
             }
         }
         else
         {
-            Toast.makeText(this, "No ndef Records found", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "No ndef Records found", Toast.LENGTH_SHORT).show();
 
         }
     }
@@ -378,7 +379,7 @@ public class FlameActivity extends Activity {
         {
             Log.e("getTextFromNdefRecord", e.getMessage(), e);
         }
-        Toast.makeText(FlameActivity.this, tagContent, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(FlameActivity.this, tagContent, Toast.LENGTH_SHORT).show();
         return tagContent;
     }
 
@@ -424,7 +425,7 @@ public class FlameActivity extends Activity {
                 mmOutStream.write(msgBuffer);                //write bytes over BT connection via outstream
             } catch (IOException e) {
                 //if you cannot write, close the application
-                Toast.makeText(getBaseContext(), "Connection Failure", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getBaseContext(), "Connection Failure", Toast.LENGTH_LONG).show();
                 //finish();
 
             }

@@ -65,12 +65,23 @@
             android:textStyle="bold"/>
 
         <TextView
+            android:id="@+id/statusView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView5"
+            android:layout_marginTop="36dp"
+            android:text="Status: "
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            />
+
+        <TextView
             android:id="@+id/FlameSensorTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/txtmsg"
+            android:layout_below="@+id/statusView"
             android:layout_marginTop="24dp"
             android:text="Flame Sensor is: "
             android:textColor="#ffffff"/>
@@ -79,9 +90,9 @@
             android:id="@+id/imageView"
             android:layout_width="200dp"
             android:layout_height="200dp"
+            android:layout_above="@+id/buttonLayout"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/fire4"
-            android:layout_above="@+id/buttonLayout"/>
+            android:background="@drawable/fire4"/>
 
         <RelativeLayout
             android:id="@+id/buttonLayout"
