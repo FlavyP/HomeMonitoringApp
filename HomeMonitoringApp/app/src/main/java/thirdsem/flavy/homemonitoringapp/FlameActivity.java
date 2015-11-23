@@ -41,9 +41,8 @@ public class FlameActivity extends Activity {
     private static final String TAGNFC = "NFC";
 
     private Button sendSms,dismiss, emrgcall;
-    private Bluetooth bt;
     private String numb, msg;
-    private String mail;
+    private String message;
     private TextView sendto, flame , messageTxv;
     private TextView txtmsg;
     Handler bluetoothIn;
@@ -70,6 +69,8 @@ public class FlameActivity extends Activity {
         numb = PreferenceManager.getDefaultSharedPreferences(this).getString("cPhoneNumber", "");
         msg = PreferenceManager.getDefaultSharedPreferences(this).getString("message", "");
         mySound = MediaPlayer.create(this, R.raw.fire);
+
+        message = "";
 
 
 
@@ -100,6 +101,8 @@ public class FlameActivity extends Activity {
             }
         });
 
+        mNfcAdapter = NfcAdapter.getDefaultAdapter(this);
+
         if (mNfcAdapter == null) {
             Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
             finish();
@@ -116,7 +119,7 @@ public class FlameActivity extends Activity {
             Toast.makeText(this, "NFC is enabled", Toast.LENGTH_LONG).show();
         }
 
-        connectService();
+        //connectService();
 
 
         sendSms = (Button) findViewById(R.id.btnS);
@@ -155,14 +158,16 @@ public class FlameActivity extends Activity {
                 if (msg.what == handlerState) {                                     //if message is what we want
                     String readMessage = (String) msg.obj;                                                                // msg.arg1 = bytes from connect thread
                     recDataString.append(readMessage);                                      //keep appending to string until ~
-                    //Toast.makeText(getBaseContext(), "Message " + recDataString, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), "Message " + recDataString, Toast.LENGTH_SHORT).show();
                     int endOfLineIndex = recDataString.indexOf("~");                    // determine the end-of-line
+                    Toast.makeText(FlameActivity.this, "End of line: " + endOfLineIndex, Toast.LENGTH_SHORT).show();
                     txtmsg.setText("Data Received = " + recDataString);
                     if (endOfLineIndex > 0) {                                           // make sure there data before ~
-                        String dataInPrint = recDataString.substring(1, endOfLineIndex);    // extract string
-                        txtmsg.setText("Data Received = " + dataInPrint);
+                        String dataInPrint = recDataString.substring(1, 4);    // extract string
+                        message = dataInPrint;
+                        txtmsg.setText("Data Received = /" + dataInPrint +"/");
                         int dataLength = dataInPrint.length();                          //get length of data received
-                        txtmsg.setText("String Length = " + String.valueOf(dataLength));
+                        txtmsg.append("\nString Length = " + String.valueOf(dataLength));
                         recDataString.delete(0, recDataString.length());
 
                         flame.setText(dataInPrint);
@@ -176,16 +181,21 @@ public class FlameActivity extends Activity {
 
 
         //this if statement might need to be inside the handler, wasnt sure where to place it xd
-        if ( flame.getText().equals("red")) {
+        String color = "";
+        if(message.contains("red"))
+        {
+            color = "red";
+        }
+        if ( color.equals("red")) {
             messageTxv.setText("alarm, alarm, alarm");
             mAnimationSet.start();
             mySound.start();
-        } else {
+        } /*else {
             messageTxv.setText("alarm is off , ALL OK");
             mAnimationSet.end();
             // myView.setVisibility(View.INVISIBLE);
             mySound.release();
-        }
+        }*/
 
         btAdapter = BluetoothAdapter.getDefaultAdapter();       // get Bluetooth adapter
         checkBTState();
@@ -245,7 +255,7 @@ public class FlameActivity extends Activity {
 
         //I send a character when resuming.beginning transmission to check device is connected
         //If it is not an exception will be thrown in the write method and finish() will be called
-        mConnectedThread.write("x");
+        //mConnectedThread.write("x");
     }
 
     @Override
@@ -291,7 +301,7 @@ public class FlameActivity extends Activity {
     private void sendSms(String phNumber, String message)
     {
         SmsManager sms = SmsManager.getDefault();
-        sms.sendTextMessage(phNumber,null, message, null, null);
+        sms.sendTextMessage(phNumber, null, message, null, null);
         Toast.makeText(this, "Message sendSms", Toast.LENGTH_LONG).show();
     }
 
@@ -300,12 +310,6 @@ public class FlameActivity extends Activity {
         super.onDestroy();
 
         mySound.release();
-    }
-
-    public void playSound(View view){
-
-        mySound.start();
-
     }
 
     @Override
@@ -341,7 +345,7 @@ public class FlameActivity extends Activity {
             if(tagContent.equals("FIRE!"))
             {
                 Toast.makeText(this, tagContent, Toast.LENGTH_SHORT).show();
-                bt.sendMessage("9");
+                mConnectedThread.write("9");
             }
         }
         else
@@ -365,22 +369,6 @@ public class FlameActivity extends Activity {
             Log.e("getTextFromNdefRecord", e.getMessage(), e);
         }
         return tagContent;
-    }
-
-    public void connectService()
-    {
-        try {
-            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-            if (bluetoothAdapter.isEnabled()) {
-                bt.connectDevice("HC-06");
-                Toast.makeText(this, "Connected?", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "Btservice started - listening");
-            } else {
-                Log.w(TAG, "Btservice started - bluetooth is not enabled");
-            }
-        } catch(Exception e){
-            Log.e(TAG, "Unable to start bt ", e);
-        }
     }
 
     private class ConnectedThread extends Thread {
